@@ -393,6 +393,23 @@
   .footer-legal{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin-top:1.5rem;}
   .footer-legal a{color:var(--parchment-dim);text-decoration:none;font-size:.78rem;letter-spacing:.06em;border-bottom:1px solid transparent;transition:color .25s,border-color .25s;}
   .footer-legal a:hover{color:var(--gold-bright);border-bottom-color:var(--hair);}
+
+  /* ---- cookie banner ---- */
+  .cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:200;background:rgba(22,27,36,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--gold);box-shadow:0 -10px 40px rgba(0,0,0,.45);}
+  .cookie-inner{max-width:var(--maxw);margin:0 auto;padding:18px 28px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:center;}
+  .cookie-text{margin:0;font-size:.9rem;color:var(--parchment-dim);flex:1 1 340px;line-height:1.5;}
+  .cookie-text a{color:var(--gold);}
+  .cookie-actions{display:flex;gap:12px;flex:0 0 auto;}
+  .cookie-btn{font-family:inherit;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:10px 22px;border-radius:3px;cursor:pointer;border:1px solid var(--gold);transition:background .25s,color .25s,border-color .25s;}
+  .cookie-reject{background:transparent;color:var(--parchment);}
+  .cookie-reject:hover{border-color:var(--parchment);}
+  .cookie-accept{background:var(--gold);color:var(--navy-deep);}
+  .cookie-accept:hover{background:var(--gold-bright);border-color:var(--gold-bright);}
+  .map-blocked{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;min-height:210px;padding:24px;border:1.5px dashed var(--hair);border-radius:3px;background:var(--navy-deep);}
+  .map-blocked p{margin:0;font-size:.86rem;color:var(--parchment-dim);max-width:340px;}
+  .map-load-btn{font-family:inherit;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:9px 20px;border-radius:3px;cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);transition:background .25s,color .25s;}
+  .map-load-btn:hover{background:var(--gold);color:var(--navy-deep);}
+  @media (max-width:560px){.cookie-inner{padding:16px 20px;gap:14px;}.cookie-actions{width:100%;}.cookie-btn{flex:1;}}
 </style>
 </head>
 <body>
@@ -610,7 +627,7 @@
       <a href="https://disstands.com/" target="_blank" rel="noopener">TikTok</a>
     </div>
     <div class="footer-map">
-      <iframe title="Mapa DISSTANDS" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Carrer+de+Joan+d%27Austria+90,+08018+Barcelona&output=embed"></iframe>
+      <iframe title="Mapa DISSTANDS" data-cookie-iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-src="https://www.google.com/maps?q=Carrer+de+Joan+d%27Austria+90,+08018+Barcelona&output=embed" hidden></iframe><div class="map-blocked"><p>Para mostrar el mapa cargamos Google Maps, que puede instalar cookies de terceros.</p><button type="button" class="map-load-btn">Cargar mapa</button></div>
       <p class="footer-addr">Carrer de Joan d&#39;Àustria, 90 · Sant Martí · 08018 Barcelona</p>
     </div>
     <p class="piece-no" id="pieceNo">Edición Solidaria · Limitada y Numerada</p>
@@ -619,6 +636,7 @@
       <a href="privacidad.html">Privacidad</a>
       <a href="cookies.html">Cookies</a>
       <a href="terminos.html">Términos y Condiciones</a>
+      <a href="#" id="cookieReopen" role="button">Configurar cookies</a>
     </nav>
   </div>
 </footer>
@@ -722,6 +740,37 @@
       });
     },{threshold:.6}).observe(el);
   })();
+
+  // cookie consent (gates Google Maps until accepted)
+  (function(){
+    var KEY='fde_cookie_consent';
+    var banner=document.getElementById('cookieBanner');
+    var iframe=document.querySelector('[data-cookie-iframe]');
+    var blocked=document.querySelector('.map-blocked');
+    function loadMap(){ if(iframe){ if(!iframe.getAttribute('src')) iframe.setAttribute('src', iframe.getAttribute('data-src')); iframe.hidden=false; } if(blocked) blocked.hidden=true; }
+    function blockMap(){ if(iframe) iframe.hidden=true; if(blocked) blocked.hidden=false; }
+    function apply(v){ if(v==='accepted') loadMap(); else blockMap(); }
+    var stored=null; try{ stored=localStorage.getItem(KEY); }catch(e){}
+    if(stored==='accepted'||stored==='rejected'){ apply(stored); }
+    else { blockMap(); if(banner) banner.hidden=false; }
+    function choose(v){ try{ localStorage.setItem(KEY,v); }catch(e){} if(banner) banner.hidden=true; apply(v); }
+    var a=document.getElementById('cookieAccept'), r=document.getElementById('cookieReject');
+    if(a) a.addEventListener('click',function(){ choose('accepted'); });
+    if(r) r.addEventListener('click',function(){ choose('rejected'); });
+    var loadBtn=document.querySelector('.map-load-btn');
+    if(loadBtn) loadBtn.addEventListener('click',function(){ choose('accepted'); });
+    var reopen=document.getElementById('cookieReopen');
+    if(reopen) reopen.addEventListener('click',function(e){ e.preventDefault(); try{ localStorage.removeItem(KEY); }catch(e){} if(banner) banner.hidden=false; });
+  })();
 </script>
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Aviso de cookies" aria-live="polite" hidden>
+  <div class="cookie-inner">
+    <p class="cookie-text">Utilizamos cookies propias técnicas y de terceros (Google Maps y Google&nbsp;Fonts) para el funcionamiento del sitio y para mostrar el mapa. Puedes aceptarlas o rechazarlas. Más información en la <a href="cookies.html">Política de Cookies</a>.</p>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn cookie-reject" id="cookieReject">Rechazar</button>
+      <button type="button" class="cookie-btn cookie-accept" id="cookieAccept">Aceptar</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
