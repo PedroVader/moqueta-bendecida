@@ -388,6 +388,11 @@
   .footer-map{max-width:560px;margin:1.9rem auto 0;}
   .footer-map iframe{width:100%;height:280px;border:1.5px solid var(--gold);border-radius:3px;display:block;filter:grayscale(.35) contrast(.95) brightness(.92);}
   .footer-addr{margin:.85rem 0 0;font-size:.85rem;font-style:italic;color:var(--parchment-dim);letter-spacing:.02em;}
+
+  /* ---- footer legal nav ---- */
+  .footer-legal{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin-top:1.5rem;}
+  .footer-legal a{color:var(--parchment-dim);text-decoration:none;font-size:.78rem;letter-spacing:.06em;border-bottom:1px solid transparent;transition:color .25s,border-color .25s;}
+  .footer-legal a:hover{color:var(--gold-bright);border-bottom-color:var(--hair);}
 </style>
 </head>
 <body>
@@ -609,6 +614,12 @@
       <p class="footer-addr">Carrer de Joan d&#39;Àustria, 90 · Sant Martí · 08018 Barcelona</p>
     </div>
     <p class="piece-no" id="pieceNo">Edición Solidaria · Limitada y Numerada</p>
+    <nav class="footer-legal">
+      <a href="aviso-legal.html">Aviso Legal</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="cookies.html">Cookies</a>
+      <a href="terminos.html">Términos y Condiciones</a>
+    </nav>
   </div>
 </footer>
 

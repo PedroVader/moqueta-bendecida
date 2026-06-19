@@ -1,0 +1,70 @@
+/* ===========================================================
+   Fragmentos de Esperanza · estilos de páginas legales
+   Comparte la paleta y tipografía del sitio principal.
+   =========================================================== */
+:root{
+  --navy:#1d232f;--navy-deep:#161b24;--navy-soft:#232a38;
+  --gold:#ac8040;--gold-bright:#c99a55;
+  --parchment:#ece4d3;--parchment-dim:rgba(236,228,211,.62);
+  --hair:rgba(172,128,64,.28);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--navy);color:var(--parchment);
+  font-family:"EB Garamond",Georgia,serif;font-size:18px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+.legal-wrap{max-width:780px;margin:0 auto;padding:0 28px;}
+
+/* top bar */
+.legal-top{position:sticky;top:0;z-index:10;background:rgba(22,27,36,.82);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);}
+.legal-top .legal-wrap{display:flex;align-items:center;min-height:58px;}
+.legal-home{color:var(--parchment);text-decoration:none;font-size:.82rem;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:600;}
+.legal-home:hover{color:var(--gold-bright);}
+
+/* document body */
+.legal-doc{padding:54px 28px 24px;}
+.legal-kicker{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 .8rem;}
+h1{font-size:clamp(2rem,6vw,2.8rem);color:var(--parchment);margin:0 0 .3rem;font-weight:600;line-height:1.12;}
+.legal-lead{color:var(--parchment-dim);font-style:italic;margin:0 0 1.4rem;}
+h2{font-size:1.28rem;color:var(--gold-bright);margin:2.5rem 0 .5rem;font-weight:600;}
+h3{font-size:1.05rem;color:var(--parchment);margin:1.6rem 0 .3rem;font-weight:600;}
+p,li{color:var(--parchment);}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--hair);}
+a:hover{color:var(--gold-bright);}
+ul{padding-left:1.25rem;margin:.6rem 0;}
+li{margin:.4rem 0;}
+strong{color:var(--gold-bright);font-weight:600;}
+
+/* highlighted placeholder — completar antes de publicar */
+.todo{background:rgba(201,154,85,.16);border:1px dashed var(--gold);border-radius:3px;
+  padding:.02em .35em;color:var(--gold-bright);font-style:italic;font-size:.95em;}
+
+/* note / disclaimer box */
+.legal-note{margin:1.6rem 0;padding:15px 20px;border:1px solid var(--hair);
+  border-left:3px solid var(--gold);border-radius:3px;background:var(--navy-deep);
+  font-size:.95rem;color:var(--parchment-dim);}
+.legal-note strong{color:var(--gold);}
+
+.legal-updated{margin-top:2.6rem;font-style:italic;color:var(--parchment-dim);font-size:.9rem;}
+
+/* tables (cookies) */
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem;}
+th,td{border:1px solid var(--hair);padding:8px 11px;text-align:left;vertical-align:top;}
+th{color:var(--gold-bright);font-weight:600;background:var(--navy-soft);}
+
+/* footer */
+.legal-foot{border-top:1px solid var(--hair);margin-top:46px;padding:36px 0;background:var(--navy-deep);}
+.legal-nav{display:flex;flex-wrap:wrap;gap:16px 22px;margin-bottom:1.1rem;}
+.legal-nav a{font-size:.82rem;letter-spacing:.03em;}
+.legal-nav a.active{color:var(--gold);border-bottom-color:var(--gold);}
+.legal-foot p{font-size:.8rem;color:var(--parchment-dim);margin:0;letter-spacing:.04em;}
+
+@media (max-width:560px){
+  body{font-size:17px;}
+  .legal-doc{padding:40px 20px 20px;}
+  .legal-wrap{padding:0 20px;}
+}
