@@ -382,6 +382,12 @@
   .founder-media img,.founder-media video{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;border-radius:3px;border:1.5px solid var(--gold);background:#000;box-shadow:0 12px 30px rgba(0,0,0,.35);}
   .fm-cap{text-align:center;font-size:.8rem;font-style:italic;color:var(--parchment-dim);margin:.9rem 0 0;}
   @media (max-width:560px){.founder-media{grid-template-columns:1fr;max-width:330px;margin-left:auto;margin-right:auto;}}
+
+  /* ---- footer extras: redes + mapa ---- */
+  .footer-channels{margin:1.7rem auto 0;}
+  .footer-map{max-width:560px;margin:1.9rem auto 0;}
+  .footer-map iframe{width:100%;height:280px;border:1.5px solid var(--gold);border-radius:3px;display:block;filter:grayscale(.35) contrast(.95) brightness(.92);}
+  .footer-addr{margin:.85rem 0 0;font-size:.85rem;font-style:italic;color:var(--parchment-dim);letter-spacing:.02em;}
 </style>
 </head>
 <body>
@@ -587,8 +593,21 @@
     <p class="org">Fragmentos de Esperanza</p>
     <p class="meta">
       Una iniciativa de DISSTANDS Moquetas<br>
+      <a href="mailto:cancerinfantil@disstands.com">cancerinfantil@disstands.com</a><br>
       <a href="mailto:moquetas@disstands.com">moquetas@disstands.com</a> · <a href="https://disstands.com/" target="_blank" rel="noopener">disstands.com</a>
     </p>
+    <div class="channels footer-channels">
+      <a href="https://www.instagram.com/disstands_moquetas_sl" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://disstands.com/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://disstands.com/" target="_blank" rel="noopener">X</a>
+      <a href="https://disstands.com/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://disstands.com/" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://disstands.com/" target="_blank" rel="noopener">TikTok</a>
+    </div>
+    <div class="footer-map">
+      <iframe title="Mapa DISSTANDS" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Carrer+de+Joan+d%27Austria+90,+08018+Barcelona&output=embed"></iframe>
+      <p class="footer-addr">Carrer de Joan d&#39;Àustria, 90 · Sant Martí · 08018 Barcelona</p>
+    </div>
     <p class="piece-no" id="pieceNo">Edición Solidaria · Limitada y Numerada</p>
   </div>
 </footer>
