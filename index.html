@@ -428,6 +428,16 @@
 
   .logo-link{display:inline-block;line-height:0;border-bottom:0;}
   .logo-link:hover{opacity:.8;}
+
+  /* ---- footer social (2 filas con iconos) ---- */
+  .footer-social{margin:1.9rem auto .2rem;max-width:520px;}
+  .fs-row{display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:18px 0;}
+  .fs-row + .fs-row{border-top:1px solid var(--hair);}
+  .fs-name{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--parchment-dim);font-weight:600;}
+  .fs-icons{display:flex;gap:13px;}
+  .fs-icons a{display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border:1px solid var(--hair);border-radius:50%;color:var(--gold);border-bottom:1px solid var(--hair);transition:color .25s,border-color .25s,background .25s;}
+  .fs-icons a:hover{color:var(--gold-bright);border-color:var(--gold);background:rgba(172,128,64,.1);}
+  .fs-icons svg{width:18px;height:18px;display:block;}
 </style>
 </head>
 <body>
@@ -604,15 +614,6 @@
         <span class="press-title">«La moqueta bendecida durante la inauguración de la Cruz de la Sagrada Familia ayudará a luchar contra el cáncer infantil»</span>
         <span class="press-cue">Leer la cobertura completa &rarr;</span>
       </a>
-
-      <div class="channels">
-        <a href="https://www.instagram.com/disstands_moquetas_sl" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://disstands.com/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://disstands.com/" target="_blank" rel="noopener">X</a>
-        <a href="https://disstands.com/" target="_blank" rel="noopener">Facebook</a>
-        <a href="https://disstands.com/" target="_blank" rel="noopener">YouTube</a>
-        <a href="https://disstands.com/" target="_blank" rel="noopener">TikTok</a>
-      </div>
       <div class="cta-row">
         <a class="cta" href="https://disstands.com/" target="_blank" rel="noopener">Conocer DISSTANDS&nbsp;&rarr;</a>
         <a class="cta" href="https://www.preicojuridicos.com/" target="_blank" rel="noopener">Conocer Preico Jurídicos&nbsp;&rarr;</a>
@@ -647,13 +648,15 @@
       <a href="mailto:cancerinfantil@disstands.com">cancerinfantil@disstands.com</a><br>
       <a href="mailto:moquetas@disstands.com">moquetas@disstands.com</a> · <a href="https://disstands.com/" target="_blank" rel="noopener">disstands.com</a>
     </p>
-    <div class="channels footer-channels">
-      <a href="https://www.instagram.com/disstands_moquetas_sl" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://disstands.com/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://disstands.com/" target="_blank" rel="noopener">X</a>
-      <a href="https://disstands.com/" target="_blank" rel="noopener">Facebook</a>
-      <a href="https://disstands.com/" target="_blank" rel="noopener">YouTube</a>
-      <a href="https://disstands.com/" target="_blank" rel="noopener">TikTok</a>
+    <div class="footer-social">
+      <div class="fs-row">
+        <span class="fs-name">DISSTANDS Moquetas</span>
+        <div class="fs-icons"><a href="https://www.instagram.com/disstands_moquetas_sl" target="_blank" rel="noopener" aria-label="Instagram de DISSTANDS"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.22 1 .49 1.4.9.4.4.7.8.9 1.4.17.4.36 1 .42 2.2.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2-.22.6-.49 1-.9 1.4-.4.4-.8.7-1.4.9-.4.17-1 .36-2.2.42-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42-.6-.22-1-.49-1.4-.9-.4-.4-.7-.8-.9-1.4-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.6.49-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.12.3-.28.8-.32 1.7C4 8.5 4 8.9 4 12s0 3.5.07 4.7c.04.9.2 1.4.32 1.7.17.43.37.74.69 1.06.32.32.63.52 1.06.69.3.12.8.28 1.7.32 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.12-.3.28-.8.32-1.7.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.04-.9-.2-1.4-.32-1.7-.17-.43-.37-.74-.69-1.06-.32-.32-.63-.52-1.06-.69-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4zm0 3.1a4.9 4.9 0 110 9.8 4.9 4.9 0 010-9.8zm0 1.8a3.1 3.1 0 100 6.2 3.1 3.1 0 000-6.2zm5-2a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0z"/></svg></a><a href="https://disstands.com/" target="_blank" rel="noopener" aria-label="LinkedIn de DISSTANDS"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05 4 0 4.74 2.6 4.74 6V21H17v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9z"/></svg></a><a href="https://disstands.com/" target="_blank" rel="noopener" aria-label="TikTok de DISSTANDS"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.3 2 1.5 3.62 3.5 3.9v2.62c-1.3 0-2.5-.4-3.5-1.12v6.1c0 3.06-2.5 5.5-5.5 5.5S5.5 17.56 5.5 14.5 8 9 11 9c.3 0 .6.02.9.07v2.7c-.3-.1-.6-.15-.9-.15a2.85 2.85 0 100 5.7c1.6 0 2.9-1.27 2.9-2.85V3h2.6z"/></svg></a><a href="https://disstands.com/" target="_blank" rel="noopener" aria-label="YouTube de DISSTANDS"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5 31 31 0 00.5 12 31 31 0 001 16.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5A3 3 0 0023 16.5 31 31 0 0023.5 12 31 31 0 0023 7.5zM9.8 15.3V8.7l5.7 3.3z"/></svg></a></div>
+      </div>
+      <div class="fs-row">
+        <span class="fs-name">Preico Jurídicos</span>
+        <div class="fs-icons"><a href="https://www.preicojuridicos.com/" target="_blank" rel="noopener" aria-label="Instagram de Preico Jurídicos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.22 1 .49 1.4.9.4.4.7.8.9 1.4.17.4.36 1 .42 2.2.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2-.22.6-.49 1-.9 1.4-.4.4-.8.7-1.4.9-.4.17-1 .36-2.2.42-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42-.6-.22-1-.49-1.4-.9-.4-.4-.7-.8-.9-1.4-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.6.49-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.12.3-.28.8-.32 1.7C4 8.5 4 8.9 4 12s0 3.5.07 4.7c.04.9.2 1.4.32 1.7.17.43.37.74.69 1.06.32.32.63.52 1.06.69.3.12.8.28 1.7.32 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.12-.3.28-.8.32-1.7.07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.04-.9-.2-1.4-.32-1.7-.17-.43-.37-.74-.69-1.06-.32-.32-.63-.52-1.06-.69-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4zm0 3.1a4.9 4.9 0 110 9.8 4.9 4.9 0 010-9.8zm0 1.8a3.1 3.1 0 100 6.2 3.1 3.1 0 000-6.2zm5-2a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0z"/></svg></a><a href="https://www.preicojuridicos.com/" target="_blank" rel="noopener" aria-label="LinkedIn de Preico Jurídicos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05 4 0 4.74 2.6 4.74 6V21H17v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9z"/></svg></a><a href="https://www.preicojuridicos.com/" target="_blank" rel="noopener" aria-label="TikTok de Preico Jurídicos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.3 2 1.5 3.62 3.5 3.9v2.62c-1.3 0-2.5-.4-3.5-1.12v6.1c0 3.06-2.5 5.5-5.5 5.5S5.5 17.56 5.5 14.5 8 9 11 9c.3 0 .6.02.9.07v2.7c-.3-.1-.6-.15-.9-.15a2.85 2.85 0 100 5.7c1.6 0 2.9-1.27 2.9-2.85V3h2.6z"/></svg></a><a href="https://www.preicojuridicos.com/" target="_blank" rel="noopener" aria-label="YouTube de Preico Jurídicos"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5 31 31 0 00.5 12 31 31 0 001 16.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5A3 3 0 0023 16.5 31 31 0 0023.5 12 31 31 0 0023 7.5zM9.8 15.3V8.7l5.7 3.3z"/></svg></a></div>
+      </div>
     </div>
     <div class="footer-map">
       <iframe title="Mapa DISSTANDS" data-cookie-iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-src="https://www.google.com/maps?q=Carrer+de+Joan+d%27Austria+90,+08018+Barcelona&output=embed" hidden></iframe><div class="map-blocked"><p>Para mostrar el mapa cargamos Google Maps, que puede instalar cookies de terceros.</p><button type="button" class="map-load-btn">Cargar mapa</button></div>
