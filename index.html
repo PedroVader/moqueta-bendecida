@@ -276,7 +276,8 @@
   }
 
   @media (prefers-reduced-motion:reduce){
-    *{animation:none !important;transition:none !important;}
+    *{transition:none !important;}
+    /* carrusel (montaje-scroll) se mantiene activo para que funcione en todos los equipos */
     .reveal{opacity:1;transform:none;}
     html{scroll-behavior:auto;}
   }
