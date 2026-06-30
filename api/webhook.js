@@ -59,7 +59,7 @@ async function enviarCorreoPieza(email, numero, importeEur) {
     '</div>';
 
   // Copia para la organizacion (notificacion interna de cada donacion).
-  const notify = process.env.DONATION_NOTIFY_EMAIL || 'cancerinfantil@disstands.es';
+  const notify = process.env.DONATION_NOTIFY_EMAIL || 'cancerinfantil@disstands.com';
 
   try {
     const payload = {
