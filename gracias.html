@@ -24,6 +24,10 @@
   .gracias-spin{width:40px;height:40px;border:3px solid var(--hair);border-top-color:var(--gold);border-radius:50%;
     animation:gspin .8s linear infinite;margin:0 auto 1.4rem;}
   @keyframes gspin{to{transform:rotate(360deg);}}
+  .gracias-piece{display:inline-block;border:1.5px solid var(--gold);border-radius:6px;padding:20px 36px;margin:.4rem auto 1.8rem;}
+  .gracias-piece-label{margin:0 0 4px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
+  .gracias-piece-num{margin:0;font-size:2.6rem;line-height:1;color:var(--gold-bright);font-weight:700;}
+  .gracias-piece-wait{font-size:.85rem;color:var(--parchment-dim);font-style:italic;}
 </style>
 </head>
 <body>
@@ -43,20 +47,42 @@
   var STRIPE_PUBLISHABLE_KEY = "pk_live_51TmYKl1BgE17BfkFGexHy0oHu14SUbdNPbZXHljDmd6GoYDh04rxhrbxkkNWRl2oAIBqKi9O3sLIXBoQH3if5F5Q00BvyRM6Rk";
 
   var main = document.getElementById('graciasMain');
-  function render(icon, title, msg){
+  function render(icon, title, msg, extra){
     main.innerHTML =
       '<div class="gracias-mark">' + icon + '</div>' +
       '<h1>' + title + '</h1>' +
+      (extra || '') +
       '<p class="gracias-msg">' + msg + '</p>' +
       '<a class="gracias-home" href="index.html">Volver al inicio</a>';
   }
 
   var params = new URLSearchParams(window.location.search);
   var clientSecret = params.get('payment_intent_client_secret');
+  var piId = params.get('payment_intent');
 
   if (!clientSecret || !window.Stripe) {
     render('&#9829;', 'Gracias', 'Gracias por tu interés en el proyecto.');
     return;
+  }
+
+  // Consulta el numero de pieza (lo asigna el webhook tras confirmar el pago).
+  // Reintenta varias veces porque el webhook puede tardar uno o dos segundos.
+  function mostrarNumero(num){
+    var bloque = document.getElementById('graciasPieceBox');
+    if (!bloque) return;
+    if (num) {
+      bloque.innerHTML = '<p class="gracias-piece-label">Tu pieza</p><p class="gracias-piece-num">N&ordm; ' + num + '</p>';
+    }
+  }
+  function pollNumero(intentos){
+    if (!piId || intentos <= 0) return;
+    fetch('/api/donation-status?payment_intent=' + encodeURIComponent(piId))
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d && d.numero) { mostrarNumero(d.numero); }
+        else { setTimeout(function(){ pollNumero(intentos - 1); }, 1800); }
+      })
+      .catch(function(){ setTimeout(function(){ pollNumero(intentos - 1); }, 1800); });
   }
 
   var stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
@@ -66,8 +92,11 @@
     var amount = pi ? (pi.amount / 100).toFixed(2).replace('.', ',') + ' &euro;' : '';
 
     if (status === 'succeeded') {
+      var caja = '<div class="gracias-piece" id="graciasPieceBox"><p class="gracias-piece-label">Tu pieza</p><p class="gracias-piece-wait">asignando n&uacute;mero&hellip;</p></div>';
       render('&#10003;', '&iexcl;Gracias por tu donaci&oacute;n!',
-        'Tu aportaci&oacute;n de <span class="gracias-amount">' + amount + '</span> se ha completado. El 100&#37; va a la lucha contra el c&aacute;ncer infantil. Recibir&aacute;s un recibo por correo.');
+        'Tu aportaci&oacute;n de <span class="gracias-amount">' + amount + '</span> se ha completado. El 100&#37; va a la lucha contra el c&aacute;ncer infantil. Recibir&aacute;s un recibo por correo.',
+        caja);
+      pollNumero(12);
     } else if (status === 'processing') {
       render('&#8987;', 'Donaci&oacute;n en proceso',
         'Tu pago de <span class="gracias-amount">' + amount + '</span> se est&aacute; procesando. Si elegiste <strong>transferencia bancaria</strong>, sigue las instrucciones que te ha facilitado Stripe; en cuanto llegue el dinero quedar&aacute; confirmada. Gracias por tu generosidad.');
