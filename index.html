@@ -906,11 +906,11 @@
     <div id="donaStep1">
       <label class="dona-label" for="donaAmount">Importe de tu donación</label>
       <div class="dona-amount-wrap">
-        <input id="donaAmount" type="number" min="0.5" step="1" inputmode="decimal" placeholder="0" aria-label="Importe en euros">
+        <input id="donaAmount" type="number" min="15" step="1" inputmode="decimal" placeholder="15" aria-label="Importe en euros">
         <span class="dona-cur">&euro;</span>
       </div>
       <div class="dona-presets">
-        <button type="button" data-preset="10">10&euro;</button>
+        <button type="button" data-preset="15">15&euro;</button>
         <button type="button" data-preset="25">25&euro;</button>
         <button type="button" data-preset="50">50&euro;</button>
         <button type="button" data-preset="100">100&euro;</button>
@@ -982,7 +982,7 @@
   document.getElementById('donaContinue').addEventListener('click',function(){
     err1.hidden=true;
     var val=parseFloat(String(amountEl.value||'').replace(',','.'));
-    if(!isFinite(val) || val<0.5){ err1.textContent='Introduce un importe valido (minimo 0,50 EUR).'; err1.hidden=false; return; }
+    if(!isFinite(val) || val<15){ err1.textContent='La donaci\u00f3n m\u00ednima es de 15 \u20ac.'; err1.hidden=false; return; }
     var nombre=(nameEl.value||'').trim();
     if(nombre.length<3){ err1.textContent='Introduce tu nombre y apellidos.'; err1.hidden=false; return; }
     var email=(emailEl.value||'').trim();

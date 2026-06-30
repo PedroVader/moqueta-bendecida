@@ -37,9 +37,9 @@ module.exports = async (req, res) => {
     const email = (body.email || '').trim();
     const nombre = (body.nombre || '').trim().slice(0, 120);
 
-    // Stripe rechaza importes < 0,50 EUR en tarjeta; aplicamos ese minimo tecnico.
-    if (!Number.isFinite(euros) || euros < 0.5) {
-      res.status(400).json({ error: 'El importe minimo aceptado por la pasarela es 0,50 EUR.' });
+    // Donacion minima de 15 EUR.
+    if (!Number.isFinite(euros) || euros < 15) {
+      res.status(400).json({ error: 'La donación mínima es de 15 €.' });
       return;
     }
     const cents = Math.round(euros * 100);
