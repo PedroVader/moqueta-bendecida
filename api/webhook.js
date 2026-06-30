@@ -58,16 +58,21 @@ async function enviarCorreoPieza(email, numero, importeEur) {
     (importeEur ? '<p style="color:rgba(236,228,211,.5);font-size:13px;margin:18px 0 0;">Donativo: ' + importeEur + ' &euro;</p>' : '') +
     '</div>';
 
+  // Copia para la organizacion (notificacion interna de cada donacion).
+  const notify = process.env.DONATION_NOTIFY_EMAIL || 'cancerinfantil@disstands.es';
+
   try {
+    const payload = {
+      from,
+      to: [email],
+      subject: 'Tu pieza Nº ' + num + ' · Fragmentos de Esperanza',
+      html,
+    };
+    if (notify) payload.bcc = [notify];
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from,
-        to: [email],
-        subject: 'Tu pieza Nº ' + num + ' · Fragmentos de Esperanza',
-        html,
-      }),
+      body: JSON.stringify(payload),
     });
   } catch (e) {
     console.error('Error enviando correo de pieza (Resend):', e.message);
