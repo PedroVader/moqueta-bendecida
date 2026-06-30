@@ -515,8 +515,8 @@
   .dona-presets{display:flex;gap:8px;margin:.7rem 0 0;flex-wrap:wrap;}
   .dona-presets button{flex:1;min-width:60px;font-family:inherit;font-size:.95rem;color:var(--gold);background:transparent;border:1px solid var(--hair);border-radius:3px;padding:.5rem 0;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
   .dona-presets button:hover{border-color:var(--gold);color:var(--gold-bright);background:rgba(172,128,64,.08);}
-  #donaEmail{width:100%;font-family:inherit;font-size:1rem;color:var(--parchment);background:var(--navy-deep);border:1.5px solid var(--hair);border-radius:4px;padding:.6rem .8rem;}
-  #donaEmail:focus{outline:none;border-color:var(--gold);}
+  #donaEmail,#donaName{width:100%;font-family:inherit;font-size:1rem;color:var(--parchment);background:var(--navy-deep);border:1.5px solid var(--hair);border-radius:4px;padding:.6rem .8rem;}
+  #donaEmail:focus,#donaName:focus{outline:none;border-color:var(--gold);}
   .dona-full{width:100%;justify-content:center;margin-top:1.3rem;}
   .dona-err{color:#e6a07a;font-size:.88rem;margin:.8rem 0 0;}
   .dona-amount-recap{color:var(--gold-bright);font-weight:600;font-size:1.1rem;margin:.2rem 0 1.1rem;}
@@ -915,6 +915,8 @@
         <button type="button" data-preset="50">50&euro;</button>
         <button type="button" data-preset="100">100&euro;</button>
       </div>
+      <label class="dona-label" for="donaName">Nombre y apellidos</label>
+      <input id="donaName" type="text" placeholder="Nombre y apellidos" autocomplete="name">
       <label class="dona-label" for="donaEmail">Correo electrónico</label>
       <input id="donaEmail" type="email" placeholder="tu@correo.com" autocomplete="email">
       <p class="dona-err" id="donaErr1" hidden></p>
@@ -950,6 +952,7 @@
   var step2 = document.getElementById('donaStep2');
   var amountEl = document.getElementById('donaAmount');
   var emailEl = document.getElementById('donaEmail');
+  var nameEl = document.getElementById('donaName');
   var err1 = document.getElementById('donaErr1');
   var err2 = document.getElementById('donaErr2');
 
@@ -980,12 +983,14 @@
     err1.hidden=true;
     var val=parseFloat(String(amountEl.value||'').replace(',','.'));
     if(!isFinite(val) || val<0.5){ err1.textContent='Introduce un importe valido (minimo 0,50 EUR).'; err1.hidden=false; return; }
+    var nombre=(nameEl.value||'').trim();
+    if(nombre.length<3){ err1.textContent='Introduce tu nombre y apellidos.'; err1.hidden=false; return; }
     var email=(emailEl.value||'').trim();
     if(!email || email.indexOf('@')<1){ err1.textContent='Introduce un correo electronico valido.'; err1.hidden=false; return; }
     var btn=this; btn.disabled=true; btn.textContent='Un momento...';
     fetch('/api/create-payment-intent',{
       method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({amount:val, email:email})
+      body:JSON.stringify({amount:val, email:email, nombre:nombre})
     })
     .then(function(r){ return r.json(); })
     .then(function(data){

@@ -35,6 +35,7 @@ module.exports = async (req, res) => {
     const rawAmount = String(body.amount == null ? '' : body.amount).replace(',', '.');
     const euros = parseFloat(rawAmount);
     const email = (body.email || '').trim();
+    const nombre = (body.nombre || '').trim().slice(0, 120);
 
     // Stripe rechaza importes < 0,50 EUR en tarjeta; aplicamos ese minimo tecnico.
     if (!Number.isFinite(euros) || euros < 0.5) {
@@ -46,7 +47,7 @@ module.exports = async (req, res) => {
     // Cliente (necesario para la transferencia bancaria y util para el recibo)
     let customerId;
     if (email) {
-      const customer = await stripe.customers.create({ email });
+      const customer = await stripe.customers.create({ email, name: nombre || undefined });
       customerId = customer.id;
     }
 
@@ -55,12 +56,13 @@ module.exports = async (req, res) => {
       currency: 'eur',
       customer: customerId,
       receipt_email: email || undefined,
-      description: 'Donacion - Fragmentos de Esperanza',
+      description: 'Donacion - Fragmentos de Esperanza' + (nombre ? ' - ' + nombre : ''),
       statement_descriptor_suffix: 'FRAGMENTOS',
       automatic_payment_methods: { enabled: true },
       metadata: {
         proyecto: 'Fragmentos de Esperanza',
         tipo: 'donacion',
+        nombre: nombre || '',
       },
     });
 

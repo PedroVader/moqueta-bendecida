@@ -42,15 +42,19 @@ async function kv(command) {
 }
 
 // ---- Correo opcional con el numero de pieza (via Resend) ----
-async function enviarCorreoPieza(email, numero, importeEur) {
+async function enviarCorreoPieza(email, numero, importeEur, nombre) {
   if (!process.env.RESEND_API_KEY || !email) return; // sin credenciales no se envia, el resto sigue
   const from = process.env.DONATION_FROM_EMAIL || 'Fragmentos de Esperanza <noreply@disstands.com>';
   const num = String(numero);
+  const nombreSeguro = String(nombre || '').replace(/[<>&"]/g, function (c) {
+    return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c];
+  });
+  const titulo = nombreSeguro ? '&iexcl;Gracias, ' + nombreSeguro + '!' : 'Gracias por tu donaci&oacute;n';
   const html =
     '<div style="background:#1d232f;color:#ece4d3;font-family:Georgia,serif;padding:40px 24px;text-align:center;">' +
     '<p style="letter-spacing:.26em;text-transform:uppercase;font-size:12px;color:#ac8040;margin:0 0 8px;">Fragmentos de Esperanza</p>' +
-    '<h1 style="font-size:26px;margin:0 0 6px;color:#ece4d3;">Gracias por tu donaci&oacute;n</h1>' +
-    '<p style="color:rgba(236,228,211,.7);font-style:italic;margin:0 0 26px;">El 100% va a la lucha contra el c&aacute;ncer infantil.</p>' +
+    '<h1 style="font-size:26px;margin:0 0 6px;color:#ece4d3;">' + titulo + '</h1>' +
+    '<p style="color:rgba(236,228,211,.7);font-style:italic;margin:0 0 26px;">Tu donaci&oacute;n va &iacute;ntegra a la lucha contra el c&aacute;ncer infantil.</p>' +
     '<div style="display:inline-block;border:1.5px solid #ac8040;border-radius:6px;padding:22px 34px;margin:0 0 24px;">' +
     '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#ac8040;">Tu pieza</p>' +
     '<p style="margin:0;font-size:42px;color:#c99a55;font-weight:bold;">N&ordm; ' + num + '</p></div>' +
@@ -105,7 +109,8 @@ async function asignarNumeroPieza(pi) {
 
   // Correo opcional con el numero.
   const importeEur = (pi.amount / 100).toFixed(2).replace('.', ',');
-  await enviarCorreoPieza(pi.receipt_email, numero, importeEur);
+  const nombre = (pi.metadata && pi.metadata.nombre) || '';
+  await enviarCorreoPieza(pi.receipt_email, numero, importeEur, nombre);
 
   console.log('Pieza asignada:', numero, '->', pi.id);
   return String(numero);
