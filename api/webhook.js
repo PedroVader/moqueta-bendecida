@@ -12,8 +12,8 @@
 //    KV_REST_API_URL  + KV_REST_API_TOKEN          (Vercel KV)
 //      o  UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN  (Upstash)
 //    PIECE_NUMBER_START      -> (opcional) primer numero, por defecto 1
-//    RESEND_API_KEY          -> (opcional) para enviar el correo del numero
-//    DONATION_FROM_EMAIL     -> (opcional) remitente del correo
+//    GMAIL_USER + GMAIL_APP_PASSWORD  -> (opcional) correo del numero via Gmail SMTP
+//    DONATION_FROM_NAME      -> (opcional) nombre del remitente
 // ============================================================
 const Stripe = require('stripe');
 
@@ -41,10 +41,21 @@ async function kv(command) {
   return data.result;
 }
 
-// ---- Correo opcional con el numero de pieza (via Resend) ----
+// ---- Correo opcional con el numero de pieza (via Gmail SMTP) ----
 async function enviarCorreoPieza(email, numero, importeEur) {
-  if (!process.env.RESEND_API_KEY || !email) return;
-  const from = process.env.DONATION_FROM_EMAIL || 'Fragmentos de Esperanza <onboarding@resend.dev>';
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !pass || !email) return; // sin credenciales no se envia, el resto sigue
+
+  let nodemailer;
+  try {
+    nodemailer = require('nodemailer');
+  } catch (e) {
+    console.error('nodemailer no disponible:', e.message);
+    return;
+  }
+
+  const fromName = process.env.DONATION_FROM_NAME || 'Fragmentos de Esperanza';
   const num = String(numero);
   const html =
     '<div style="background:#1d232f;color:#ece4d3;font-family:Georgia,serif;padding:40px 24px;text-align:center;">' +
@@ -57,19 +68,22 @@ async function enviarCorreoPieza(email, numero, importeEur) {
     '<p style="color:rgba(236,228,211,.7);font-size:14px;margin:0;">Sostienes un fragmento de un instante que no volver&aacute; a repetirse.</p>' +
     (importeEur ? '<p style="color:rgba(236,228,211,.5);font-size:13px;margin:18px 0 0;">Donativo: ' + importeEur + ' &euro;</p>' : '') +
     '</div>';
+
   try {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from,
-        to: [email],
-        subject: 'Tu pieza Nº ' + num + ' · Fragmentos de Esperanza',
-        html,
-      }),
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+    });
+    await transporter.sendMail({
+      from: '"' + fromName + '" <' + user + '>',
+      to: email,
+      subject: 'Tu pieza Nº ' + num + ' · Fragmentos de Esperanza',
+      html,
     });
   } catch (e) {
-    console.error('Error enviando correo de pieza:', e.message);
+    console.error('Error enviando correo de pieza (Gmail SMTP):', e.message);
   }
 }
 

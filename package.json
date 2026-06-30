@@ -4,6 +4,7 @@
   "private": true,
   "description": "Sitio de la edicion solidaria Fragmentos de Esperanza con checkout de donaciones via Stripe.",
   "dependencies": {
+    "nodemailer": "^6.9.14",
     "stripe": "^16.12.0"
   }
 }
