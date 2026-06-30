@@ -1,0 +1,9 @@
+{
+  "name": "fragmentos-de-esperanza",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio de la edicion solidaria Fragmentos de Esperanza con checkout de donaciones via Stripe.",
+  "dependencies": {
+    "stripe": "^16.12.0"
+  }
+}

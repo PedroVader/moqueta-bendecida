@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gracias por tu donación · Fragmentos de Esperanza</title>
+<meta name="description" content="Confirmación de tu donación a la edición solidaria Fragmentos de Esperanza.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link href="legal.css" rel="stylesheet">
+<style>
+  .gracias-wrap{max-width:620px;margin:0 auto;padding:90px 28px 60px;text-align:center;}
+  .gracias-mark{width:78px;height:78px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--gold);color:var(--gold);font-size:2.2rem;margin:0 0 1.4rem;line-height:1;}
+  .gracias-wrap h1{font-size:clamp(1.9rem,5vw,2.5rem);margin:0 0 .6rem;}
+  .gracias-msg{color:var(--parchment-dim);font-size:1.1rem;line-height:1.65;margin:0 auto 2rem;max-width:480px;}
+  .gracias-amount{color:var(--gold-bright);font-weight:600;}
+  .gracias-home{display:inline-flex;align-items:center;gap:.5em;padding:.8rem 2.3rem;background:var(--gold);
+    color:var(--navy-deep);font-size:.95rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+    border:1.5px solid var(--gold);border-radius:2px;text-decoration:none;transition:background .25s,transform .25s;}
+  .gracias-home:hover{background:var(--gold-bright);transform:translateY(-2px);}
+  .gracias-spin{width:40px;height:40px;border:3px solid var(--hair);border-top-color:var(--gold);border-radius:50%;
+    animation:gspin .8s linear infinite;margin:0 auto 1.4rem;}
+  @keyframes gspin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<header class="legal-top">
+  <div class="legal-wrap"><a class="legal-home" href="index.html">&larr; Fragmentos de Esperanza</a></div>
+</header>
+
+<main class="gracias-wrap" id="graciasMain">
+  <div class="gracias-spin" id="graciasSpin"></div>
+  <p class="gracias-msg" id="graciasLoading">Comprobando el estado de tu donación…</p>
+</main>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+(function(){
+  // Clave PUBLICABLE de Stripe (es publica, puede ir en el frontend).
+  var STRIPE_PUBLISHABLE_KEY = "pk_live_51TmYKl1BgE17BfkFGexHy0oHu14SUbdNPbZXHljDmd6GoYDh04rxhrbxkkNWRl2oAIBqKi9O3sLIXBoQH3if5F5Q00BvyRM6Rk";
+
+  var main = document.getElementById('graciasMain');
+  function render(icon, title, msg){
+    main.innerHTML =
+      '<div class="gracias-mark">' + icon + '</div>' +
+      '<h1>' + title + '</h1>' +
+      '<p class="gracias-msg">' + msg + '</p>' +
+      '<a class="gracias-home" href="index.html">Volver al inicio</a>';
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  var clientSecret = params.get('payment_intent_client_secret');
+
+  if (!clientSecret || !window.Stripe) {
+    render('&#9829;', 'Gracias', 'Gracias por tu interés en el proyecto.');
+    return;
+  }
+
+  var stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+  stripe.retrievePaymentIntent(clientSecret).then(function(result){
+    var pi = result.paymentIntent;
+    var status = pi ? pi.status : 'unknown';
+    var amount = pi ? (pi.amount / 100).toFixed(2).replace('.', ',') + ' &euro;' : '';
+
+    if (status === 'succeeded') {
+      render('&#10003;', '&iexcl;Gracias por tu donaci&oacute;n!',
+        'Tu aportaci&oacute;n de <span class="gracias-amount">' + amount + '</span> se ha completado. El 100&#37; va a la lucha contra el c&aacute;ncer infantil. Recibir&aacute;s un recibo por correo.');
+    } else if (status === 'processing') {
+      render('&#8987;', 'Donaci&oacute;n en proceso',
+        'Tu pago de <span class="gracias-amount">' + amount + '</span> se est&aacute; procesando. Si elegiste <strong>transferencia bancaria</strong>, sigue las instrucciones que te ha facilitado Stripe; en cuanto llegue el dinero quedar&aacute; confirmada. Gracias por tu generosidad.');
+    } else if (status === 'requires_payment_method') {
+      render('&#33;', 'El pago no se complet&oacute;',
+        'No se ha podido procesar el pago. Puedes volver al inicio e intentarlo de nuevo.');
+    } else {
+      render('&#9829;', 'Gracias', 'Estado del pago: ' + status + '.');
+    }
+  }).catch(function(){
+    render('&#9829;', 'Gracias', 'Gracias por tu donaci&oacute;n.');
+  });
+})();
+</script>
+</body>
+</html>
