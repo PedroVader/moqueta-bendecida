@@ -67,12 +67,6 @@ module.exports = async (req, res) => {
     res.status(200).json({ clientSecret: intent.client_secret });
   } catch (err) {
     console.error('create-payment-intent error:', err);
-    // DIAGNOSTICO TEMPORAL: devolvemos el detalle real para identificar el fallo.
-    // (Quitar esta exposicion cuando el pago funcione.)
-    res.status(500).json({
-      error: 'No se ha podido iniciar el pago. Intentalo de nuevo.',
-      detalle: err && err.message ? err.message : String(err),
-      tipo: err && err.type ? err.type : undefined,
-    });
+    res.status(500).json({ error: 'No se ha podido iniciar el pago. Intentalo de nuevo.' });
   }
 };
