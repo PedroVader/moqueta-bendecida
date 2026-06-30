@@ -483,6 +483,19 @@
   .moq-mat{font-style:italic;color:var(--parchment);font-size:1.05rem;text-align:right;}
   .moq-mat a{color:var(--gold);border-bottom:1px solid var(--hair);text-decoration:none;}
   .moq-mat a:hover{color:var(--gold-bright);}
+
+  /* ---- CTA Dona (Stripe Payment Link) ---- */
+  .cta-dona{display:inline-flex;align-items:center;gap:.5em;padding:.82rem 2.6rem;background:var(--gold);color:var(--navy-deep);font-family:inherit;font-size:1rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;border:1.5px solid var(--gold);border-radius:2px;text-decoration:none;border-bottom:1.5px solid var(--gold);cursor:pointer;box-shadow:0 4px 18px rgba(172,128,64,.22);transition:background .25s,border-color .25s,transform .25s,box-shadow .25s;}
+  .cta-dona:hover{background:var(--gold-bright);border-color:var(--gold-bright);color:var(--navy-deep);transform:translateY(-2px);box-shadow:0 8px 26px rgba(172,128,64,.38);}
+  .cta-dona[aria-disabled="true"]{opacity:.55;cursor:not-allowed;}
+  .cta-dona-heart{font-size:.95em;line-height:1;}
+  .cta-dona--lg{padding:1rem 3rem;font-size:1.1rem;}
+  .dona-cta{text-align:center;margin:2.6rem auto .4rem;}
+  .dona-cta-note{color:var(--parchment-dim);font-style:italic;font-size:.95rem;margin:0 0 1.05rem;}
+  .hero-cta{margin:1.7rem 0 .2rem;}
+  .dona-band{padding:64px 0;text-align:center;border-top:1px solid var(--hair);background:var(--navy-deep);}
+  .dona-band-kicker{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 .7rem;}
+  .dona-band-text{color:var(--parchment);font-size:1.12rem;max-width:540px;margin:0 auto 1.7rem;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -518,6 +531,8 @@
       <span class="heart">&#9829;</span>
       <p class="lede">Sostienes una pieza de un instante que no volverá a repetirse.</p>
       <div class="hero-foundation"><a class="logo-link" href="https://fundacionxana.org/" target="_blank" rel="noopener" aria-label="Fundación Xana (abre en una nueva pestaña)"><img class="hf-logo" src="logo-xana.svg" alt="Fundación Xana" width="118" height="61" loading="lazy"></a></div>
+
+      <div class="hero-cta"><a class="cta-dona" data-dona href="#" rel="noopener">Dona <span class="cta-dona-heart">&#9829;</span></a></div>
 
       <div class="scroll-cue">La historia
         <span>&#8595;</span>
@@ -564,7 +579,7 @@
         <figcaption>La Cruz de la Torre de Jesús, coronando la Sagrada Família.</figcaption>
       </figure>
       <p>Ese día se inauguró la Cruz que corona la Torre de Jesús, el punto más alto del templo de Gaudí. En una ceremonia presidida por el papa León XIV, el agua bendita cayó sobre la superficie que cubría el suelo del acto: la moqueta que hoy se reparte, fragmento a fragmento, bajo el nombre de <em>Fragmentos de Esperanza</em>.</p>
-      <p class="dim">Una pieza nacida para un único día se convierte así en algo que perdura.</p>
+      <p class="dim">Una pieza nacida para un único día se convierte así en algo que perdura.</p><div class="dona-cta reveal"><p class="dona-cta-note">El 100&#37; de tu aportación va a la lucha contra el cáncer infantil.</p><a class="cta-dona" data-dona href="#" rel="noopener">Dona <span class="cta-dona-heart">&#9829;</span></a></div>
     </div>
   </section>
 
@@ -663,7 +678,7 @@
         <li><b>Fundación beneficiaria.</b> La entidad receptora de los fondos se anuncia en los canales oficiales del proyecto.</li>
         <li><b>Proceso transparente.</b> El procedimiento se desarrolla con la máxima trazabilidad, de principio a fin.</li>
         <li><b>Edición cerrada.</b> Cada pieza está numerada; el número total es limitado y verificable.</li>
-      </ul>
+      </ul><div class="dona-cta reveal"><p class="dona-cta-note">El 100&#37; de tu aportación va a la lucha contra el cáncer infantil.</p><a class="cta-dona" data-dona href="#" rel="noopener">Dona <span class="cta-dona-heart">&#9829;</span></a></div>
     </div>
   </section>
 
@@ -693,6 +708,8 @@
   </section>
 
 </main>
+
+<section class="dona-band"><div class="wrap reveal"><p class="dona-band-kicker">Tu gesto cuenta</p><p class="dona-band-text">Cada aportación, grande o pequeña, va íntegra a la lucha contra el cáncer infantil.</p><a class="cta-dona cta-dona--lg" data-dona href="#" rel="noopener">Dona ahora <span class="cta-dona-heart">&#9829;</span></a></div></section>
 
 <!-- ============ FOOTER / SEAL ============ -->
 <footer>
@@ -850,5 +867,24 @@
     </div>
   </div>
 </div>
+<script>
+  /* ============================================================
+     ENLACE DE DONACION (Stripe Payment Link)
+     >>> PEGA AQUI tu Payment Link de Stripe (empieza por https://buy.stripe.com/...)
+     ============================================================ */
+  var STRIPE_PAYMENT_LINK = "REEMPLAZA_CON_TU_PAYMENT_LINK";
+  (function(){
+    var links=document.querySelectorAll('[data-dona]');
+    for(var i=0;i<links.length;i++){
+      var a=links[i];
+      if(STRIPE_PAYMENT_LINK && STRIPE_PAYMENT_LINK.indexOf('http')===0){
+        a.href=STRIPE_PAYMENT_LINK; a.target='_blank';
+      } else {
+        a.setAttribute('aria-disabled','true');
+        a.addEventListener('click',function(e){e.preventDefault();});
+      }
+    }
+  })();
+</script>
 </body>
 </html>
