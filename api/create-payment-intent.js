@@ -24,6 +24,12 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // Comprobacion explicita de configuracion (causa mas frecuente del fallo).
+  if (!process.env.STRIPE_SECRET_KEY) {
+    res.status(500).json({ error: 'Falta STRIPE_SECRET_KEY en las variables de entorno de Vercel (anadela y haz Redeploy).' });
+    return;
+  }
+
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const rawAmount = String(body.amount == null ? '' : body.amount).replace(',', '.');
@@ -61,6 +67,12 @@ module.exports = async (req, res) => {
     res.status(200).json({ clientSecret: intent.client_secret });
   } catch (err) {
     console.error('create-payment-intent error:', err);
-    res.status(500).json({ error: 'No se ha podido iniciar el pago. Intentalo de nuevo.' });
+    // DIAGNOSTICO TEMPORAL: devolvemos el detalle real para identificar el fallo.
+    // (Quitar esta exposicion cuando el pago funcione.)
+    res.status(500).json({
+      error: 'No se ha podido iniciar el pago. Intentalo de nuevo.',
+      detalle: err && err.message ? err.message : String(err),
+      tipo: err && err.type ? err.type : undefined,
+    });
   }
 };
