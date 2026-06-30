@@ -58,7 +58,8 @@ async function enviarCorreoPieza(email, numero, importeEur, nombre) {
     '<div style="display:inline-block;border:1.5px solid #ac8040;border-radius:6px;padding:22px 34px;margin:0 0 24px;">' +
     '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#ac8040;">Tu pieza</p>' +
     '<p style="margin:0;font-size:42px;color:#c99a55;font-weight:bold;">N&ordm; ' + num + '</p></div>' +
-    '<p style="color:rgba(236,228,211,.7);font-size:14px;margin:0;">Sostienes un fragmento de un instante que no volver&aacute; a repetirse.</p>' +
+    '<p style="color:rgba(236,228,211,.7);font-size:14px;margin:0 0 18px;">Sostienes un fragmento de un instante que no volver&aacute; a repetirse.</p>' +
+    '<p style="color:#c99a55;font-size:14px;margin:0;line-height:1.6;">Tu pedido se est&aacute; procesando. Cuando est&eacute; listo, te enviaremos un correo electr&oacute;nico.</p>' +
     (importeEur ? '<p style="color:rgba(236,228,211,.5);font-size:13px;margin:18px 0 0;">Donativo: ' + importeEur + ' &euro;</p>' : '') +
     '</div>';
 
