@@ -63,24 +63,54 @@ async function enviarCorreoPieza(email, numero, importeEur, nombre) {
     (importeEur ? '<p style="color:rgba(236,228,211,.5);font-size:13px;margin:18px 0 0;">Donativo: ' + importeEur + ' &euro;</p>' : '') +
     '</div>';
 
-  // Copia para la organizacion (notificacion interna de cada donacion).
-  const notify = process.env.DONATION_NOTIFY_EMAIL || 'cancerinfantil@disstands.com';
-
+  // 1) Correo de agradecimiento al DONANTE
   try {
-    const payload = {
-      from,
-      to: [email],
-      subject: 'Tu pieza Nº ' + num + ' · Fragmentos de Esperanza',
-      html,
-    };
-    if (notify) payload.bcc = [notify];
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        from,
+        to: [email],
+        subject: 'Tu pieza Nº ' + num + ' · Fragmentos de Esperanza',
+        html,
+      }),
     });
   } catch (e) {
-    console.error('Error enviando correo de pieza (Resend):', e.message);
+    console.error('Error enviando correo al donante (Resend):', e.message);
+  }
+
+  // 2) Aviso interno a la ORGANIZACION con los datos de la donacion
+  const notify = process.env.DONATION_NOTIFY_EMAIL || 'cancerinfantil@disstands.com';
+  if (notify) {
+    const emailSeguro = String(email).replace(/[<>&"]/g, function (c) {
+      return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c];
+    });
+    const avisoHtml =
+      '<div style="font-family:Arial,Helvetica,sans-serif;color:#1d232f;padding:24px;max-width:520px;">' +
+      '<h2 style="margin:0 0 14px;color:#ac8040;">Nueva donaci&oacute;n recibida</h2>' +
+      '<table style="border-collapse:collapse;font-size:15px;">' +
+      '<tr><td style="padding:5px 16px 5px 0;color:#777;">Nombre y apellidos</td><td style="padding:5px 0;"><b>' + (nombreSeguro || '(sin nombre)') + '</b></td></tr>' +
+      '<tr><td style="padding:5px 16px 5px 0;color:#777;">Correo</td><td style="padding:5px 0;">' + emailSeguro + '</td></tr>' +
+      '<tr><td style="padding:5px 16px 5px 0;color:#777;">Importe</td><td style="padding:5px 0;"><b>' + (importeEur || '?') + ' &euro;</b></td></tr>' +
+      '<tr><td style="padding:5px 16px 5px 0;color:#777;">Pieza asignada</td><td style="padding:5px 0;">N&ordm; ' + num + '</td></tr>' +
+      '</table>' +
+      '<p style="font-size:13px;color:#999;margin:18px 0 0;">Puedes responder directamente a este correo para contactar con la persona donante.</p>' +
+      '</div>';
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from,
+          to: [notify],
+          reply_to: email,
+          subject: 'Nueva donación: ' + (nombre || email) + ' — ' + (importeEur || '?') + ' € (Pieza Nº ' + num + ')',
+          html: avisoHtml,
+        }),
+      });
+    } catch (e) {
+      console.error('Error enviando aviso a la organizacion (Resend):', e.message);
+    }
   }
 }
 
